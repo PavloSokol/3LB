@@ -31,22 +31,26 @@ app.use(function(err, req, res, next){
      return;
     }); 
 
-app.get('/ErrorExample', function(req, res, next){
+app.get( '/ErrorExample', function(req, res, next){
         next(new Error('Random error!'));
         }); 
 
-        app.get('/api/articles', function(req, res) {
+        app.get( '/api/articles', function(req, res) {
             res.send('This is not implemented now');
             });
-            app.post('/api/articles', function(req, res) {
+
+            app.post( '/api/articles', function(req, res) {
              res.send('This is not implemented now');
             });
-            app.get('/api/articles/:id', function(req, res) {
+
+            app.get( '/api/articles/:id', function(req, res) {
             res.send('This is not implemented now');
             });
-            app.put('/api/articles/:id', function (req, res){
+
+            app.put( '/api/articles/:id', function (req, res){
             res.send('This is not implemented now');
             });
-            app.delete('/api/articles/:id', function (req, res){
+
+            app.delete( '/api/articles/:id', function (req, res){
             res.send('This is not implemented now');
             });
