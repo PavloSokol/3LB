@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Товари</title>
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  </head>
+  <body>
+    <form name="form" method="post">
+      <div>
+        <input
+          type="text"
+          placeholder="Порядковий номер студента"
+          id="idef"
+          name="idef"
+          required
+        />
+        <br />
+        <input
+          type="text"
+          placeholder="Прізвище"
+          id="namegoods"
+          name="goods"
+          required
+        />
+        <br />
+        <input
+          type="text"
+          placeholder="Ім'я"
+          id="name"
+          name="name"
+          required
+        /><br />
+        <input type="submit" value="Додати" id="addOne" required />
+      </div>
+      <br />
+      <input type="button" value="Вивести всі записи" id="findAll" />
+      <div>
+        <input type="text" placeholder="Студент" id="findWord" /><br />
+        <input type="button" value="Пошук" name="find" id="findOne" />
+      </div>
+    </form>
+    <table class="table table-condensed table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Прізвище</th>
+          <th>Ім'я</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      function GetAllGoods() {
+        $.ajax({
+          url: "/api/goods",
+          type: "GET",
+          contentType: "application/json",
+          success: function(allgoods) {
+            $("table tbody").empty();
+            let rows = "";
+            $.each(allgoods, function(index, goods) {
+              rows += row(goods);
+            });
+            $("table tbody").append(rows);
+          }
+        });
+      }
+
+      function GetGoods(goodsName) {
+        $.ajax({
+          url: "/api/goods/" + goodsName,
+          type: "GET",
+          contentType: "application/json",
+          success: function(goods) {
+            $("table tbody").empty();
+            $("table tbody").append(row(goods));
+          }
+        });
+      }
+
+      function CreateGoods(goodsId, goodsName, goodsPrice) {
+        $.ajax({
+          url: "api/goods",
+          contentType: "application/json",
+          method: "POST",
+          data: JSON.stringify({
+            idef: goodsId,
+            name: goodsName,
+            price: goodsPrice
+          }),
+          success: function(goods) {
+            $("table tbody").append(row(goods));
+          }
+        });
+      }
+      var row = function(goods) {
+        return (
+          "<tr data-rowid='" +
+          goods._id +
+          "'><td>" +
+          goods.id +
+          "</td>" +
+          "<td>" +
+          goods.name +
+          "</td> <td>" +
+          goods.price +
+          "</td>"
+        );
+      };
+      $("form").submit(function(e) {
+        e.preventDefault();
+        let idef = this.elements["idef"].value;
+        let name = this.elements["namegoods"].value;
+        let price = this.elements["name"].value;
+        this.elements["idef"].value = "";
+        this.elements["namegoods"].value = "";
+        this.elements["name"].value = "";
+        CreateGoods(idef, name, price);
+      });
+      $("body").on("click", "#findOne", function() {
+        let goodsName = $("#findWord")[0].value;
+        GetGoods(goodsName);
+      });
+      $("body").on("click", "#findAll", function() {
+        GetAllGoods();
+      });
+    </script>
+  </body>
+</html>
