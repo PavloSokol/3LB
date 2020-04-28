@@ -101,6 +101,7 @@
           }
         });
       }
+      
       var row = function(goods) {
         return (
           "<tr data-rowid='" +
@@ -115,6 +116,7 @@
           "</td>"
         );
       };
+      
       $("form").submit(function(e) {
         e.preventDefault();
         let idef = this.elements["idef"].value;
